@@ -10,19 +10,17 @@ const url = "https://jsonplaceholder.typicode.com/posts";
       let data = [];
       
       res.on('data', chunk => {
-         // console.log(chunk);
          data.push(chunk);
-         // data += chunk //Push chunk into data array
       });
 
       res.on('end', () => {
-         // const posts = JSON.parse(data);
-         const posts = JSON.parse(Buffer.concat(data).toString()); //Convert data to json and save in posts
-         console.log(posts);
+         const posts = JSON.parse(Buffer.concat(data).toString());
 
+         let baseDir = path.join(__dirname, '/result'); //Set directory
+         const post = JSON.stringify(posts); //convert to json
+         
          //Write to result directory
-         let baseDir = path.join(__dirname, '/result');
-         fs.writeFile(`${baseDir}/posts.txt`, posts, function(err) {
+         fs.writeFile(`${baseDir}/posts.json`, post, function(err) {
             if(err) return console.log(err);
             console.log(`Posts saved in ${baseDir}/posts.json`);
          })
